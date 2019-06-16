@@ -1,7 +1,7 @@
 ---
 date: 2018-05-11 
 title: concurrent.futures 并发操作
-categories: Python
+categories: python
 tag: future 
 ---
 

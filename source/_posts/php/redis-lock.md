@@ -1,7 +1,7 @@
 ---
 title: Redis 分布式锁
 date: 2018-12-04
-categories: PHP
+categories: php
 tag: redis
 ---
 实现一个分布式锁定，我们至少要考虑它能满足一下的这些需求:

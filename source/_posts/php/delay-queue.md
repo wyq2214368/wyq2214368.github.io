@@ -1,7 +1,7 @@
 ---
 date: 2019-01-01 
 title: 延迟队列
-categories: PHP
+categories: php
 tag: 延迟队列 
 ---
 

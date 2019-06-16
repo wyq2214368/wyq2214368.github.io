@@ -1,7 +1,7 @@
 ---
 date: 2018-06-21
 title: Pypppeteer
-categories: Python
+categories: python
 tag: pypppeteer 
 ---
 

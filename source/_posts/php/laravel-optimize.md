@@ -1,7 +1,7 @@
 ---
 title: 使用Swoole提升Laravel的性能
 date: 2019-05-14 
-categories: PHP
+categories: php
 tag: laravel 
 ---
 ### 优化 Laravel 网站打开速度

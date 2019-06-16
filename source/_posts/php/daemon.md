@@ -1,7 +1,7 @@
 ---
 title: PHP 守护进程
 date: 2019-02-18
-categories: PHP
+categories: php
 tag: daemon
 ---
 
