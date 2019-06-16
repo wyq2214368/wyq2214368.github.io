@@ -5,8 +5,8 @@
 # Site
 title: WYQ
 subtitle: WYQ's Blog
-description: A phper's blog
-keywords: wyq php laravel linux mysql python js go
+description: 记录成长中的点滴
+keywords: wyq博客 小白成神路 php laravel linux mysql python js go
 author: wangyaqi
 language: zh-CN
 timezone:
@@ -70,7 +70,7 @@ wordCount:
 # order_by: Posts order. (Order by date descending by default)
 index_generator:
   path: ''
-  per_page: 9
+  per_page: 12
   order_by: -date
   
 # Category & Tag
