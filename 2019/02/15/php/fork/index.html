@@ -1,0 +1,1253 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="PHP多进程, wyq php laravel linux python js go">
+    <meta name="description" content="PHP多进程
+pcntl_fork()函数成功执行时会在父进程返回子进程的进程id(pid)，因为系统的初始进程init进程的pid为1，后来产生进程的pid都会大于此进程，所以我们可以通过判断pcntl_fork()的返回值大于1来确实当">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>PHP多进程 | WYQ</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/aos/2.3.4/aos.css">
+    <link rel="stylesheet" type="text/css" href="https://githubio.pek3b.qingstor.com/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/lightgallery/1.6.11/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+    </style>
+
+    <script src="https://cdn.bootcss.com/jquery/2.2.0/jquery.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">WYQ</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">WYQ</div>
+        <div class="logo-desc">
+            
+            A phper&#39;s blog
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/yujiarong" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/yujiarong" class="github-corner tooltipped hide-on-med-and-down" target="_blank" data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewbox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://githubio.pek3b.qingstor.com/medias/featureimages/14.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        PHP多进程
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="https://cdn.bootcss.com/tocbot/4.7.0/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/fork/" target="_blank">
+                                <span class="chip bg-color">fork</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/PHP/" class="post-category" target="_blank">
+                                PHP
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-02-15
+                </div>
+
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h3 id="PHP多进程"><a href="#PHP多进程" class="headerlink" title="PHP多进程"></a>PHP多进程</h3><ul>
+<li>pcntl_fork()函数成功执行时会在父进程返回子进程的进程id(pid)，因为系统的初始进程init进程的pid为1，后来产生进程的pid都会大于此进程，所以我们可以通过判断pcntl_fork()的返回值大于1来确实当前进程是父进程；<br>而在子进程中，此函数的返回值会是固定值0，我们也可以通过判断pcntl_fork()的返回值为0来确定子进程；</li>
+<li>pcntl_fork()函数在执行失败时，会在父进程返回-1,当然也不会有子进程产生。</li>
+</ul>
+<h4 id="简单的子进程生成例子"><a href="#简单的子进程生成例子" class="headerlink" title="简单的子进程生成例子"></a>简单的子进程生成例子</h4><pre class=" language-php"><code class="language-php"><span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">pcntl_fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$pid</span> <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//错误处理：创建子进程失败时返回-1.</span>
+    <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string">'fork error'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$pid</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//父进程会得到子进程号，所以这里是父进程执行的逻辑</span>
+    <span class="token keyword">echo</span> <span class="token string">"parent \n"</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">//等待子进程中断，防止子进程成为僵尸进程。</span>
+    <span class="token function">pcntl_wait</span><span class="token punctuation">(</span><span class="token variable">$status</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//子进程得到的$pid为0, 所以这里是子进程执行的逻辑。</span>
+    <span class="token keyword">echo</span> <span class="token string">"child \n"</span><span class="token punctuation">;</span>
+
+    exit<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h4 id="多进程生成例子"><a href="#多进程生成例子" class="headerlink" title="多进程生成例子"></a>多进程生成例子</h4><pre class=" language-php"><code class="language-php"><span class="token function">define</span><span class="token punctuation">(</span><span class="token string">'FORK_NUMS'</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token variable">$pids</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token constant">FORK_NUMS</span><span class="token punctuation">;</span> <span class="token operator">++</span><span class="token variable">$i</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token variable">$pids</span><span class="token punctuation">[</span><span class="token variable">$i</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">pcntl_fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$pids</span><span class="token punctuation">[</span><span class="token variable">$i</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string">'fork error'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$pids</span><span class="token punctuation">[</span><span class="token variable">$i</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">pcntl_waitpid</span><span class="token punctuation">(</span><span class="token variable">$pids</span><span class="token punctuation">[</span><span class="token variable">$i</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token variable">$status</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//等待指定进程退出 </span>
+        <span class="token keyword">echo</span> <span class="token string">"pernet \n"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">echo</span> <span class="token string">"child id:"</span> <span class="token punctuation">.</span> <span class="token function">getmypid</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">.</span> <span class="token string">" \n"</span><span class="token punctuation">;</span>
+        exit<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//在子进程中,需通过exit来退出，不然会产生递归多进程,父进程中不需要exit,不然会中断多进程。</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h4 id="多进程写入文件"><a href="#多进程写入文件" class="headerlink" title="多进程写入文件"></a>多进程写入文件</h4><pre class=" language-php"><code class="language-php"><span class="token function">define</span><span class="token punctuation">(</span><span class="token string">'FORK_NUMS'</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$pids</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token variable">$fp</span> <span class="token operator">=</span> <span class="token function">fopen</span><span class="token punctuation">(</span><span class="token string">'./test.log'</span><span class="token punctuation">,</span> <span class="token string">'wb'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$num</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token constant">FORK_NUMS</span><span class="token punctuation">;</span> <span class="token operator">++</span><span class="token variable">$i</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token variable">$pids</span><span class="token punctuation">[</span><span class="token variable">$i</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">pcntl_fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$pids</span><span class="token punctuation">[</span><span class="token variable">$i</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string">'fork error'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$pids</span><span class="token punctuation">[</span><span class="token variable">$i</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> <span class="token operator">++</span><span class="token variable">$i</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">flock</span><span class="token punctuation">(</span><span class="token variable">$fp</span><span class="token punctuation">,</span> <span class="token constant">LOCK_EX</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//并发文件锁</span>
+            <span class="token function">fwrite</span><span class="token punctuation">(</span><span class="token variable">$fp</span><span class="token punctuation">,</span> <span class="token function">getmypid</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">.</span> <span class="token string">' : '</span> <span class="token punctuation">.</span> <span class="token function">date</span><span class="token punctuation">(</span><span class="token string">'Y-m-d H:i:s'</span><span class="token punctuation">)</span> <span class="token punctuation">.</span> <span class="token string">" : {$num} \r\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">flock</span><span class="token punctuation">(</span><span class="token variable">$fp</span><span class="token punctuation">,</span> <span class="token constant">LOCK_UN</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">echo</span> <span class="token function">getmypid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">": success \r\n"</span><span class="token punctuation">;</span>
+            <span class="token operator">++</span><span class="token variable">$num</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        exit<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">foreach</span><span class="token punctuation">(</span><span class="token variable">$pids</span> <span class="token keyword">as</span> <span class="token variable">$k</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token variable">$v</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$v</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">pcntl_waitpid</span><span class="token punctuation">(</span><span class="token variable">$v</span><span class="token punctuation">,</span> <span class="token variable">$status</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//等待子进程完成</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token function">fclose</span><span class="token punctuation">(</span><span class="token variable">$fp</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="多进程生产封装"><a href="#多进程生产封装" class="headerlink" title="多进程生产封装"></a>多进程生产封装</h4><h5 id="用方法生产进程"><a href="#用方法生产进程" class="headerlink" title="用方法生产进程"></a>用方法生产进程</h5><pre class=" language-php"><code class="language-php"><span class="token keyword">function</span> <span class="token function">createProcess</span><span class="token punctuation">(</span><span class="token variable">$callback</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">pcntl_fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$pid</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string">'fork error'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$pid</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token variable">$pid</span> <span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+        <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">posix_getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$callback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token string">"child {$pid} process end"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">handle</span><span class="token punctuation">(</span><span class="token variable">$args</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token function">print_r</span><span class="token punctuation">(</span><span class="token variable">$args</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">echo</span> <span class="token string">'handle'</span><span class="token punctuation">.</span><span class="token constant">PHP_EOL</span><span class="token punctuation">;</span>
+    <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token variable">$i</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span><span class="token variable">$i</span><span class="token operator">&lt;</span><span class="token number">2</span><span class="token punctuation">;</span><span class="token variable">$i</span><span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token variable">$childList</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">createProcess</span><span class="token punctuation">(</span><span class="token string">'handle'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">//阻塞等子进程结束</span>
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$childList</span> <span class="token keyword">as</span> <span class="token variable">$v</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$v</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token function">pcntl_waitpid</span><span class="token punctuation">(</span><span class="token variable">$v</span><span class="token punctuation">,</span> <span class="token variable">$status</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token function">print_r</span><span class="token punctuation">(</span><span class="token variable">$childList</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre>
+<h5 id="用类生产进程"><a href="#用类生产进程" class="headerlink" title="用类生产进程"></a>用类生产进程</h5><pre class=" language-php"><code class="language-php"><span class="token keyword">class</span> <span class="token class-name">Process</span>  
+<span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token variable">$callback</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//进程处理方法</span>
+    <span class="token keyword">private</span> <span class="token variable">$args</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//进程处理参数</span>
+    <span class="token keyword">private</span> <span class="token variable">$pid</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//子进程pid</span>
+    <span class="token keyword">private</span> <span class="token variable">$ppid</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//主进程id</span>
+
+    <span class="token keyword">function</span> <span class="token function">__construct</span><span class="token punctuation">(</span><span class="token variable">$callback</span><span class="token punctuation">,</span><span class="token variable">$args</span><span class="token operator">=</span><span class="token string">''</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">ppid</span>     <span class="token operator">=</span> <span class="token function">posix_getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">callback</span> <span class="token operator">=</span> <span class="token variable">$callback</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">args</span>     <span class="token operator">=</span> <span class="token variable">$args</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">/**
+     * 生成子进程
+    */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">pcntl_fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$pid</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Exception</span><span class="token punctuation">(</span><span class="token string">"fork  error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$pid</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">pid</span> <span class="token operator">=</span> <span class="token variable">$pid</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span> <span class="token variable">$pid</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+            <span class="token function">posix_kill</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">ppid</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//检查主进程是否存在 存在则返回true</span>
+            <span class="token variable">$callback</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">callback</span><span class="token punctuation">;</span>
+            <span class="token variable">$callback</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">args</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">/**
+     * 同步阻塞等子进程结束
+    */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">pcntl_waitpid</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">></span><span class="token property">pid</span><span class="token punctuation">,</span> <span class="token variable">$status</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">handle</span><span class="token punctuation">(</span><span class="token variable">$args</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token function">print_r</span><span class="token punctuation">(</span><span class="token variable">$args</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">echo</span> <span class="token string">'handle'</span><span class="token punctuation">.</span><span class="token constant">PHP_EOL</span><span class="token punctuation">;</span>
+    <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token variable">$p</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token variable">$i</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span><span class="token variable">$i</span><span class="token operator">&lt;</span><span class="token number">2</span><span class="token punctuation">;</span><span class="token variable">$i</span><span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token variable">$cp</span>  <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Process</span><span class="token punctuation">(</span><span class="token string">'handle'</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$cp</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$p</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$cp</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$p</span> <span class="token keyword">as</span> <span class="token variable">$v</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token variable">$v</span><span class="token operator">-</span><span class="token operator">></span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">echo</span> <span class="token string">'主进程执行完毕'</span><span class="token punctuation">;</span>
+
+</code></pre>
+<h3 id="进程间通信（IPC）"><a href="#进程间通信（IPC）" class="headerlink" title="进程间通信（IPC）"></a>进程间通信（IPC）</h3><p>通常linux中的进程通信方式有：消息队列、信号量、共享内存、信号、管道、socket。<a href="https://www.jianshu.com/p/08bcf724196b" target="_blank" rel="noopener">转载</a></p>
+<h4 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h4><p>消息队列是存放在内存中的一个队列。如下代码将创建3个生产者子进程，2个消费者子进程。这5个进程将通过消息队列通信。<br>由于消息队列取数据是原子性的,所以不需要锁或者信号量</p>
+<pre class=" language-php"><code class="language-php"><span class="token variable">$parentPid</span> <span class="token operator">=</span> <span class="token function">posix_getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token string">"parent progress pid:{$parentPid}\n"</span><span class="token punctuation">;</span><span class="token variable">$childList</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 创建消息队列,以及定义消息类型(类似于数据库中的库)</span>
+<span class="token variable">$id</span> <span class="token operator">=</span> <span class="token function">ftok</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">,</span><span class="token string">'m'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$msgQueue</span> <span class="token operator">=</span> <span class="token function">msg_get_queue</span><span class="token punctuation">(</span><span class="token variable">$id</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token constant">MSG_TYPE</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 生产者</span>
+<span class="token keyword">function</span> <span class="token function">producer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">global</span> <span class="token variable">$msgQueue</span><span class="token punctuation">;</span>
+    <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">posix_getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$repeatNum</span> <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span> <span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">&lt;=</span> <span class="token variable">$repeatNum</span><span class="token punctuation">;</span> <span class="token variable">$i</span><span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token variable">$str</span> <span class="token operator">=</span> <span class="token string">"({$pid})progress create! {$i}"</span><span class="token punctuation">;</span>
+        <span class="token function">msg_send</span><span class="token punctuation">(</span><span class="token variable">$msgQueue</span><span class="token punctuation">,</span><span class="token constant">MSG_TYPE</span><span class="token punctuation">,</span><span class="token variable">$str</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$rand</span> <span class="token operator">=</span> <span class="token function">rand</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token variable">$rand</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 消费者</span>
+<span class="token keyword">function</span> <span class="token function">consumer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">global</span> <span class="token variable">$msgQueue</span><span class="token punctuation">;</span>
+    <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">posix_getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$repeatNum</span> <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span> <span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">&lt;=</span> <span class="token variable">$repeatNum</span><span class="token punctuation">;</span> <span class="token variable">$i</span><span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token variable">$rel</span> <span class="token operator">=</span> <span class="token function">msg_receive</span><span class="token punctuation">(</span><span class="token variable">$msgQueue</span><span class="token punctuation">,</span><span class="token constant">MSG_TYPE</span><span class="token punctuation">,</span><span class="token variable">$msgType</span><span class="token punctuation">,</span><span class="token number">1024</span><span class="token punctuation">,</span><span class="token variable">$message</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">echo</span> <span class="token string">"{$message} | consumer({$pid}) destroy \n"</span><span class="token punctuation">;</span>
+        <span class="token variable">$rand</span> <span class="token operator">=</span> <span class="token function">rand</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token variable">$rand</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">function</span> <span class="token function">createProgress</span><span class="token punctuation">(</span><span class="token variable">$callback</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">pcntl_fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span> <span class="token variable">$pid</span> <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 创建失败</span>
+        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token string">"fork progress error!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$pid</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 子进程执行程序</span>
+        <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">posix_getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$callback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token string">"({$pid})child progress end!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 父进程执行程序</span>
+        <span class="token keyword">return</span> <span class="token variable">$pid</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 3个写进程</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">++</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">createProgress</span><span class="token punctuation">(</span><span class="token string">'producer'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$childList</span><span class="token punctuation">[</span><span class="token variable">$pid</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">echo</span> <span class="token string">"create producer child progress: {$pid} \n"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 2个写进程</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">++</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">createProgress</span><span class="token punctuation">(</span><span class="token string">'consumer'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$childList</span><span class="token punctuation">[</span><span class="token variable">$pid</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">echo</span> <span class="token string">"create consumer child progress: {$pid} \n"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 等待所有子进程结束</span>
+<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token variable">$childList</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token variable">$childPid</span> <span class="token operator">=</span> <span class="token function">pcntl_wait</span><span class="token punctuation">(</span><span class="token variable">$status</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$childPid</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token function">unset</span><span class="token punctuation">(</span><span class="token variable">$childList</span><span class="token punctuation">[</span><span class="token variable">$childPid</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">echo</span> <span class="token string">"({$parentPid})main progress end!\n"</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="信号"><a href="#信号" class="headerlink" title="信号"></a>信号</h4><p>信号是一种系统调用。通常我们用的kill命令就是发送某个信号给某个进程的。具体有哪些信号可以在liunx/mac中运行kill -l查看。<br>php 中发送信号用 posix_kill($pid,SIGINT);<br>下面这个例子中，父进程等待5秒钟，向子进程发送sigint信号。子进程捕获信号，掉信号处理函数处理。</p>
+<pre class=" language-php"><code class="language-php"><span class="token variable">$parentPid</span> <span class="token operator">=</span> <span class="token function">posix_getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token string">"parent progress pid:{$parentPid}\n"</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 定义一个信号处理函数</span>
+<span class="token keyword">function</span> <span class="token function">sighandler</span><span class="token punctuation">(</span><span class="token variable">$signo</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">posix_getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">echo</span> <span class="token string">"{$pid} progress,oh no ,I'm killed!\n"</span><span class="token punctuation">;</span>
+    <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">pcntl_fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span> <span class="token variable">$pid</span> <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 创建失败</span>
+    <span class="token function">exit</span><span class="token punctuation">(</span><span class="token string">"fork progress error!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$pid</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 子进程执行程序</span>
+    <span class="token comment" spellcheck="true">// 注册信号处理函数</span>
+    <span class="token keyword">declare</span><span class="token punctuation">(</span>ticks<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">pcntl_signal</span><span class="token punctuation">(</span><span class="token constant">SIGINT</span><span class="token punctuation">,</span> <span class="token string">"sighandler"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">posix_getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">echo</span> <span class="token string">"{$pid} child progress is running!\n"</span><span class="token punctuation">;</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">exit</span><span class="token punctuation">(</span><span class="token string">"({$pid})child progress end!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 父进程执行程序</span>
+    <span class="token variable">$childList</span><span class="token punctuation">[</span><span class="token variable">$pid</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 5秒后,父进程向子进程发送sigint信号.</span>
+    <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">posix_kill</span><span class="token punctuation">(</span><span class="token variable">$pid</span><span class="token punctuation">,</span><span class="token constant">SIGINT</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">echo</span> <span class="token string">"({$parentPid})main progress end!\n"</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="信号量与共享内存"><a href="#信号量与共享内存" class="headerlink" title="信号量与共享内存"></a>信号量与共享内存</h4><ul>
+<li>信号量：是系统提供的一种原子操作，一个信号量，同时只有你个进程能操作。一个进程获得了某个信号量，就必须被该进程释放掉。</li>
+<li>共享内存：是系统在内存中开辟的一块公共的内存区域，任何一个进程都可以访问，在同一时刻，可以有多个进程访问该区域，为了保证数据的一致性，需要对该内存区域加锁或信号量。</li>
+</ul>
+<pre class=" language-php"><code class="language-php"><span class="token variable">$parentPid</span> <span class="token operator">=</span> <span class="token function">posix_getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token string">"parent progress pid:{$parentPid}\n"</span><span class="token punctuation">;</span>
+<span class="token variable">$childList</span> <span class="token operator">=</span> <span class="token keyword">array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// 创建共享内存,创建信号量,定义共享key</span>
+<span class="token variable">$shm_id</span> <span class="token operator">=</span> <span class="token function">ftok</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">,</span><span class="token string">'m'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$sem_id</span> <span class="token operator">=</span> <span class="token function">ftok</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">,</span><span class="token string">'s'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$shareMemory</span> <span class="token operator">=</span> <span class="token function">shm_attach</span><span class="token punctuation">(</span><span class="token variable">$shm_id</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$signal</span> <span class="token operator">=</span> <span class="token function">sem_get</span><span class="token punctuation">(</span><span class="token variable">$sem_id</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token constant">SHARE_KEY</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// 生产者</span>
+<span class="token keyword">function</span> <span class="token function">producer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">global</span> <span class="token variable">$shareMemory</span><span class="token punctuation">;</span>
+    <span class="token keyword">global</span> <span class="token variable">$signal</span><span class="token punctuation">;</span>
+    <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">posix_getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$repeatNum</span> <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span> <span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">&lt;=</span> <span class="token variable">$repeatNum</span><span class="token punctuation">;</span> <span class="token variable">$i</span><span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 获得信号量</span>
+        <span class="token function">sem_acquire</span><span class="token punctuation">(</span><span class="token variable">$signal</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">shm_has_var</span><span class="token punctuation">(</span><span class="token variable">$shareMemory</span><span class="token punctuation">,</span><span class="token constant">SHARE_KEY</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 有值,加一</span>
+            <span class="token variable">$count</span> <span class="token operator">=</span> <span class="token function">shm_get_var</span><span class="token punctuation">(</span><span class="token variable">$shareMemory</span><span class="token punctuation">,</span><span class="token constant">SHARE_KEY</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$count</span> <span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token function">shm_put_var</span><span class="token punctuation">(</span><span class="token variable">$shareMemory</span><span class="token punctuation">,</span><span class="token constant">SHARE_KEY</span><span class="token punctuation">,</span><span class="token variable">$count</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">echo</span> <span class="token string">"({$pid}) count: {$count}\n"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 无值,初始化</span>
+            <span class="token function">shm_put_var</span><span class="token punctuation">(</span><span class="token variable">$shareMemory</span><span class="token punctuation">,</span><span class="token constant">SHARE_KEY</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">echo</span> <span class="token string">"({$pid}) count: 0\n"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment" spellcheck="true">// 用完释放</span>
+        <span class="token function">sem_release</span><span class="token punctuation">(</span><span class="token variable">$signal</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token variable">$rand</span> <span class="token operator">=</span> <span class="token function">rand</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token variable">$rand</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">function</span> <span class="token function">createProgress</span><span class="token punctuation">(</span><span class="token variable">$callback</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">pcntl_fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span> <span class="token variable">$pid</span> <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 创建失败</span>
+        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token string">"fork progress error!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$pid</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 子进程执行程序</span>
+        <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">posix_getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$callback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token string">"({$pid})child progress end!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 父进程执行程序</span>
+        <span class="token keyword">return</span> <span class="token variable">$pid</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 3个写进程</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">;</span> <span class="token variable">$i</span> <span class="token operator">++</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">createProgress</span><span class="token punctuation">(</span><span class="token string">'producer'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$childList</span><span class="token punctuation">[</span><span class="token variable">$pid</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">echo</span> <span class="token string">"create producer child progress: {$pid} \n"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 等待所有子进程结束</span>
+<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">empty</span><span class="token punctuation">(</span><span class="token variable">$childList</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token variable">$childPid</span> <span class="token operator">=</span> <span class="token function">pcntl_wait</span><span class="token punctuation">(</span><span class="token variable">$status</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$childPid</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token function">unset</span><span class="token punctuation">(</span><span class="token variable">$childList</span><span class="token punctuation">[</span><span class="token variable">$childPid</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">// 释放共享内存与信号量</span>
+<span class="token function">shm_remove</span><span class="token punctuation">(</span><span class="token variable">$shareMemory</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">sem_remove</span><span class="token punctuation">(</span><span class="token variable">$signal</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token string">"({$parentPid})main progress end!\n"</span><span class="token punctuation">;</span>
+</code></pre>
+<h4 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h4><p>管道是比较常用的多进程通信手段，管道分为无名管道与有名管道，无名管道只能用于具有亲缘关系的进程间通信，而有名管道可以用于同一主机上任意进程。这里只介绍有名管道。下面的例子，子进程写入数据，父进程读取数据。</p>
+<pre class=" language-php"><code class="language-php"><span class="token comment" spellcheck="true">// 定义管道路径,与创建管道</span>
+<span class="token variable">$pipe_path</span> <span class="token operator">=</span> <span class="token string">'/data/test.pipe'</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">file_exists</span><span class="token punctuation">(</span><span class="token variable">$pipe_path</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">posix_mkfifo</span><span class="token punctuation">(</span><span class="token variable">$pipe_path</span><span class="token punctuation">,</span><span class="token number">0664</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token string">"create pipe error!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token variable">$pid</span> <span class="token operator">=</span> <span class="token function">pcntl_fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$pid</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 子进程,向管道写数据</span>
+    <span class="token variable">$file</span> <span class="token operator">=</span> <span class="token function">fopen</span><span class="token punctuation">(</span><span class="token variable">$pipe_path</span><span class="token punctuation">,</span><span class="token string">'w'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token function">fwrite</span><span class="token punctuation">(</span><span class="token variable">$file</span><span class="token punctuation">,</span><span class="token string">'hello world'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token variable">$rand</span> <span class="token operator">=</span> <span class="token function">rand</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token variable">$rand</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">exit</span><span class="token punctuation">(</span><span class="token string">'child end!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 父进程,从管道读数据</span>
+    <span class="token variable">$file</span> <span class="token operator">=</span> <span class="token function">fopen</span><span class="token punctuation">(</span><span class="token variable">$pipe_path</span><span class="token punctuation">,</span><span class="token string">'r'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token variable">$rel</span> <span class="token operator">=</span> <span class="token function">fread</span><span class="token punctuation">(</span><span class="token variable">$file</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">echo</span> <span class="token string">"{$rel}\n"</span><span class="token punctuation">;</span>
+        <span class="token variable">$rand</span> <span class="token operator">=</span> <span class="token function">rand</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token variable">$rand</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+            </div>
+            <hr>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">如果对您有帮助，不妨打赏一下～</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.jpg" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            <div class="reprint">
+                <p>
+                    <span class="reprint-tip">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;转载请注明:
+                    </span>
+                    <a href="http://wyq2214368.github.io" class="b-link-green">WYQ</a>
+                    <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
+                    <a href="/2019/02/15/php/fork/" class="b-link-green">PHP多进程</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="https://cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="https://cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '4fa3700cfe038b2f911e',
+        clientSecret: 'fcfb5a7797fa2f21ae2dffa69c4875e5a64d4b64',
+        repo: 'wyq2214368.github.io',
+        owner: 'wyq2214368',
+        admin: "wyq2214368",
+        id: '2019-02-15T00-00-00',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/02/18/php/daemon/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://githubio.pek3b.qingstor.com/medias/featureimages/12.jpg" class="responsive-img" alt="PHP 守护进程">
+                        
+                        <span class="card-title">PHP 守护进程</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">PHP 守护进程守护进程是一种运行在后台的特殊进程，因为它不属于任何一个终端，所以不会收到任何终端发来的任何信号。它与前台进程显著的区别是：
+
+它没有控制终端，不能直接和用户交互，在后台运行；
+它不受用户登录和注销的影响，只受开机或关机的影</div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-02-18
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/PHP/" class="post-category" target="_blank">
+                                    PHP
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/daemon/" target="_blank">
+                        <span class="chip bg-color">daemon</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6 overflow-policy" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/01/25/rabbitmq/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://githubio.pek3b.qingstor.com/medias/featureimages/14.jpg" class="responsive-img" alt="RabbitMQ总结">
+                        
+                        <span class="card-title">RabbitMQ总结</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">RabbitMQ是实现了高级消息队列协议（AMQP）的开源消息代理软件（亦称面向消息的中间件）
+Rabbitmq特性
+可靠性：持久化存储、ACK消息确认、发布confirm、事务支持。
+灵活的路由：交换机功能。交换机类型：direct,to</div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-01-25
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/PHP/" class="post-category" target="_blank">
+                                    PHP
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/rabbitMQ/" target="_blank">
+                        <span class="chip bg-color">rabbitMQ</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.bootcss.com/tocbot/4.7.0/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.bootcss.com/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://cdn.bootcss.com/masonry/4.0.0/masonry.pkgd.min.js"></script>
+<script src="https://cdn.bootcss.com/aos/2.3.4/aos.js"></script>
+<script src="https://cdn.bootcss.com/scrollprogress/3.0.0/scrollProgress.min.js"></script>
+<script src="https://cdn.bootcss.com/lightgallery/1.6.11/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="https://githubio.pek3b.qingstor.com/libs/others/clicklove.js"></script>
+
+
+    <script async src="https://githubio.pek3b.qingstor.com/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>
