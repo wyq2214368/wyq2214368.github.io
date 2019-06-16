@@ -4,8 +4,8 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="分类: PHP, wyq php laravel linux python js go">
-    <meta name="description" content="分类: PHP | WYQ">
+    <meta name="keywords" content="分类: php, wyq php laravel linux python js go">
+    <meta name="description" content="分类: php | WYQ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -13,8 +13,8 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>分类: PHP | WYQ</title>
-    <link rel="icon" type="image/png" href="/favicon.png">
+    <title>分类: php | WYQ</title>
+    <link rel="icon" type="image/png" href="https://githubio.pek3b.qingstor.com/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/materialize/1.0.0/css/materialize.min.css">
@@ -39,7 +39,7 @@
             <div class="brand-logo">
                 <a href="/" class="waves-effect waves-light">
                     
-                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    <img src="https://githubio.pek3b.qingstor.com/medias/logo.png" class="logo-img" alt="LOGO">
                     
                     <span class="logo-span">WYQ</span>
                 </a>
@@ -114,7 +114,7 @@
 
     <div class="mobile-head bg-color">
         
-        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        <img src="https://githubio.pek3b.qingstor.com/medias/logo.png" class="logo-img circle responsive-img">
         
         <div class="logo-name">WYQ</div>
         <div class="logo-desc">
@@ -274,7 +274,7 @@
 </div>
 <script>
 // 每天切换 banner 图.  Switch banner image every day.
-$('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay() + '.jpg)');
+$('.bg-cover').css('background-image', 'url(https://githubio.pek3b.qingstor.com/medias/banner/' + new Date().getDay() + '.jpg)');
 </script>
     </div>
 </div>
@@ -295,7 +295,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 
                 <a href="/categories/PHP/" title="PHP: 11">
                     <span class="chip center-align waves-effect waves-light
-                             chip-active " style="background-color: #F9EBEA;">PHP
+                             chip-default " style="background-color: #F9EBEA;">PHP
                         <span class="tag-length">11</span>
                     </span>
                 </a>
@@ -311,7 +311,7 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 
                 <a href="/categories/php/" title="php: 1">
                     <span class="chip center-align waves-effect waves-light
-                             chip-default " style="background-color: #D5F5E3;">php
+                             chip-active " style="background-color: #D5F5E3;">php
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -329,32 +329,33 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
             
             <div class="article tag-post col s12 m6 l4 overflow-policy" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2019/05/14/php/laravel-optimize/">
+                    <a href="/2019/05/21/php/websocket-mini-liao-tian-shi/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="https://githubio.pek3b.qingstor.com/medias/featureimages/14.jpg" class="responsive-img" alt="使用Swoole提升Laravel的性能">
+                            <img src="https://githubio.pek3b.qingstor.com/medias/featureimages/5.jpg" class="responsive-img" alt="Websokcet 实现mini聊天室">
                             
-                            <span class="card-title">使用Swoole提升Laravel的性能</span>
+                            <span class="card-title">Websokcet 实现mini聊天室</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                优化 Laravel 网站打开速度
-关闭 debug打开.env 文件，把 debug 设置为 false. barryvdh/laravel-debugbar等开发环境使用的包一定要放在require-dev,线上就不要载入了，就算载入也
+                                前端经常需要与服务器进行持续的通讯以保持双方信息的同步，long long ago 我们会使用长轮询的方式来实现比如:
+setInterval(function() {
+    $.get("/api/getData", function(
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-05-14
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-05-21
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fa fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/PHP/" class="post-category" target="_blank">
-                                    PHP
+                                <a href="/categories/php/" class="post-category" target="_blank">
+                                    php
                                 </a>
                                 
                                 
@@ -365,8 +366,8 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/laravel/" target="_blank">
-                            <span class="chip bg-color">laravel</span>
+                        <a href="/tags/websokcet/" target="_blank">
+                            <span class="chip bg-color">websokcet</span>
                         </a>
                         
                     </div>
@@ -374,55 +375,91 @@ $('.bg-cover').css('background-image', 'url(/medias/banner/' + new Date().getDay
                 </div>
             </div>
             
-            <div class="article tag-post col s12 m6 l4 overflow-policy" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2019/04/29/swoole/coroutine/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="https://githubio.pek3b.qingstor.com/medias/featureimages/15.jpg" class="responsive-img" alt="Swoole 协程">
-                            
-                            <span class="card-title">Swoole 协程</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Swoole 协程协程可以理解为纯用户态的线程，其通过协作而不是抢占来进行切换。相对于进程或者线程，协程所有的操作都可以在用户态完成，创建和切换的消耗更低。协程主要用于优化IO操作频繁的任务,当然这个IO需要使用异步IO，能够yeild的异
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-04-29
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fa fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/PHP/" class="post-category" target="_blank">
-                                    PHP
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
+        </div>
+    </article>
+</main>
 
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/swoole/" target="_blank">
-                            <span class="chip bg-color">swoole</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+
             
-            <div class="article tag-post col s12 m6 l4 overflow-policy" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2019/04/11/fan-she/">
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv">
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv">
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+                
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字" class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="https://githubio.pek3b.qingstor.com/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="https://cdn.bootcss.com/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://cdn.bootcss.com/masonry/4.0.0/masonry.pkgd.min.js"></script>
+<script src="https://cdn.bootcss.com/aos/2.3.4/aos.js"></script>
+<script src="https://cdn.bootcss.com/scrollprogress/3.0.0/scrollProgress.min.js"></script>
+<script src="https://cdn.bootcss.com/lightgallery/1.6.11/js/lightgallery-all.min.js"></script>
+<script src="https://githubio.pek3b.qingstor.com/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="https://githubio.pek3b.qingstor.com/libs/others/clicklove.js"></script>
+
+
+    <script async src="https://githubio.pek3b.qingstor.com/libs/others/busuanzi.pure.mini.js"></script>
+
+
+</body>
+</html>           <a href="/2019/04/11/fan-she/">
                         <div class="card-image tag-image">
                             
                             
