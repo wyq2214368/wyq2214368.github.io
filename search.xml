@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>让页面中的http请求转为https请求</title>
+      <link href="/2019/07/05/nginx/rang-ye-mian-zhong-de-http-qing-qiu-zhuan-wei-https-qing-qiu/"/>
+      <url>/2019/07/05/nginx/rang-ye-mian-zhong-de-http-qing-qiu-zhuan-wei-https-qing-qiu/</url>
+      
+        <content type="html"><![CDATA[<p>由于项目业务升级，网站升级https协议。</p><p>在 HTTPS 承载的页面上不允许出现 http 请求，一旦出现就是提示或报错：</p><pre><code>Mixed Content: The page at &#39;https://www.example.com&#39; was loaded over HTTPS, but requested an insecure image ‘http://static.example.com/test.jpg’. This content should also be served over HTTPS.</code></pre><p>因此即使使用到的域名对http请求已经强制了https，但是在页面中浏览器对于http请求压根就不会发送，那么就必需替换页面上所有的http为https，而我遇到的是个使用了十年的老系统，代码中有很多硬编码的http地址，一一替换的话要替换2万多行。。</p><p>于是从http协议入手，在响应header中添加<code>upgrade-insecure-requests</code>，即在php入口文件中添加：</p><pre class=" language-php"><code class="language-php"><span class="token function">header</span><span class="token punctuation">(</span><span class="token string">"Content-Security-Policy: upgrade-insecure-requests"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre><p>或着也可以在由前端在html页面中添加meta：</p><pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">http-equiv</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Content-Security-Policy<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>upgrade-insecure-requests<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span></code></pre><p>或者在nginx配置中进行header的添加：</p><pre class=" language-nginx"><code class="language-nginx"><span class="token keyword">server</span> <span class="token punctuation">{</span>        <span class="token keyword">listen</span>       <span class="token number">443</span><span class="token punctuation">;</span>        <span class="token keyword">server_name</span>  www<span class="token punctuation">.</span>example<span class="token punctuation">.</span>com<span class="token punctuation">;</span>        <span class="token keyword">error_log</span>  <span class="token operator">/</span>logs<span class="token operator">/</span>nginx<span class="token operator">/</span>error<span class="token punctuation">.</span>log<span class="token punctuation">;</span>        <span class="token keyword">root</span> <span class="token operator">/</span>var<span class="token operator">/</span>www<span class="token operator">/</span>www<span class="token punctuation">.</span>example<span class="token punctuation">.</span>com<span class="token punctuation">;</span>        <span class="token keyword">index</span>  <span class="token keyword">index</span><span class="token punctuation">.</span>php <span class="token keyword">index</span><span class="token punctuation">.</span>html <span class="token keyword">index</span><span class="token punctuation">.</span>htm<span class="token punctuation">;</span>        <span class="token keyword">ssl</span> on<span class="token punctuation">;</span>        <span class="token keyword">ssl_certificate</span>   cert<span class="token operator">/</span>test<span class="token operator">/</span>test<span class="token punctuation">.</span>pem<span class="token punctuation">;</span>        <span class="token keyword">ssl_certificate_key</span>  cert<span class="token operator">/</span>test<span class="token operator">/</span>test<span class="token punctuation">.</span>key<span class="token punctuation">;</span>        <span class="token keyword">ssl_session_timeout</span> 5m<span class="token punctuation">;</span>         <span class="token comment" spellcheck="true">#添加响应头</span>        <span class="token keyword">add_header</span> Content<span class="token operator">-</span>Security<span class="token operator">-</span>Policy <span class="token string">"upgrade-insecure-requests'"</span><span class="token punctuation">;</span>        <span class="token keyword">location</span> <span class="token operator">/</span> <span class="token punctuation">{</span>                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token operator">-</span>f <span class="token variable">$request_filename</span><span class="token punctuation">)</span><span class="token punctuation">{</span>                        <span class="token keyword">rewrite</span> <span class="token operator">^</span><span class="token operator">/</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">)</span>$ <span class="token operator">/</span><span class="token keyword">index</span><span class="token punctuation">.</span>php<span class="token operator">?</span>s<span class="token operator">=</span>$<span class="token number">1</span> last<span class="token punctuation">;</span>                        <span class="token keyword">break</span><span class="token punctuation">;</span>                <span class="token punctuation">}</span>                <span class="token keyword">limit_except</span> GET POST DELETE PUT <span class="token punctuation">{</span>                        <span class="token keyword">deny</span> all<span class="token punctuation">;</span>                <span class="token punctuation">}</span>        <span class="token punctuation">}</span>……<span class="token punctuation">}</span></code></pre><p>从而让浏览器对页面中的所有http请求，都升级为https协议发送请求，从而省去了逐一修改url的协议的麻烦。</p><p>以上，希望对大家有帮助。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> nginx </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> html </tag>
+            
+            <tag> php </tag>
+            
+            <tag> nginx </tag>
+            
+            <tag> http </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>laravel将请求分派到另一个路由</title>
       <link href="/2019/06/25/php/laravel-jiang-qing-qiu-fen-pai-dao-ling-yi-ge-lu-you/"/>
       <url>/2019/06/25/php/laravel-jiang-qing-qiu-fen-pai-dao-ling-yi-ge-lu-you/</url>
