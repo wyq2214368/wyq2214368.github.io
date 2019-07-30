@@ -4,10 +4,11 @@
 
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="让页面中的http请求转为https请求, wyq博客 小白成神路 php laravel linux mysql python js go">
-    <meta name="description" content="由于项目业务升级，网站升级https协议。
-在 HTTPS 承载的页面上不允许出现 http 请求，一旦出现就是提示或报错：
-Mixed Content: The page at &amp;#39;https://www.example.com&amp;#">
+    <meta name="keywords" content="Laravel的groupBy()报错问题处理, wyq博客 小白成神路 php laravel linux mysql python js go">
+    <meta name="description" content="
+Laravel 5.7Mysql 5.7
+
+mysql报错如下：SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #1 of SELECT list is">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -15,7 +16,7 @@ Mixed Content: The page at &amp;#39;https://www.example.com&amp;#">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>让页面中的http请求转为https请求 | WYQ</title>
+    <title>Laravel的groupBy()报错问题处理 | WYQ</title>
     <link rel="icon" type="image/png" href="https://githubio.pek3b.qingstor.com/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -259,13 +260,13 @@ Mixed Content: The page at &amp;#39;https://www.example.com&amp;#">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://githubio.pek3b.qingstor.com/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://githubio.pek3b.qingstor.com/medias/featureimages/4.jpg')">
     <div class="container">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
                     <div class="description center-align post-title">
-                        让页面中的http请求转为https请求
+                        Laravel的groupBy()报错问题处理
                     </div>
                 </div>
             </div>
@@ -376,20 +377,12 @@ Mixed Content: The page at &amp;#39;https://www.example.com&amp;#">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/html/" target="_blank">
-                                <span class="chip bg-color">html</span>
+                            <a href="/tags/laravel/" target="_blank">
+                                <span class="chip bg-color">laravel</span>
                             </a>
                         
-                            <a href="/tags/php/" target="_blank">
-                                <span class="chip bg-color">php</span>
-                            </a>
-                        
-                            <a href="/tags/nginx/" target="_blank">
-                                <span class="chip bg-color">nginx</span>
-                            </a>
-                        
-                            <a href="/tags/http/" target="_blank">
-                                <span class="chip bg-color">http</span>
+                            <a href="/tags/mysql/" target="_blank">
+                                <span class="chip bg-color">mysql</span>
                             </a>
                         
                     </div>
@@ -400,8 +393,8 @@ Mixed Content: The page at &amp;#39;https://www.example.com&amp;#">
                     <div class="post-cate">
                         <i class="fa fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/nginx/" class="post-category" target="_blank">
-                                nginx
+                            <a href="/categories/php/" class="post-category" target="_blank">
+                                php
                             </a>
                         
                     </div>
@@ -412,7 +405,7 @@ Mixed Content: The page at &amp;#39;https://www.example.com&amp;#">
             <div class="post-info">
                 <div class="post-date info-break-policy">
                     <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-07-05
+                    2019-07-30
                 </div>
 
                 
@@ -428,49 +421,15 @@ Mixed Content: The page at &amp;#39;https://www.example.com&amp;#">
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>由于项目业务升级，网站升级https协议。</p>
-<p>在 HTTPS 承载的页面上不允许出现 http 请求，一旦出现就是提示或报错：</p>
-<pre><code>Mixed Content: The page at &#39;https://www.example.com&#39; was loaded over HTTPS, 
-but requested an insecure image ‘http://static.example.com/test.jpg’. 
-This content should also be served over HTTPS.
-</code></pre><p>因此即使使用到的域名对http请求已经强制了https，但是在页面中浏览器对于http请求压根就不会发送，那么就必需替换页面上所有的http为https，而我遇到的是个使用了十年的老系统，代码中有很多硬编码的http地址，一一替换的话要替换2万多行。。</p>
-<p>于是从http协议入手，在响应header中添加<code>upgrade-insecure-requests</code>，即在php入口文件中添加：</p>
-<pre class=" language-php"><code class="language-php"><span class="token function">header</span><span class="token punctuation">(</span><span class="token string">"Content-Security-Policy: upgrade-insecure-requests"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <blockquote>
+<p>Laravel 5.7<br>Mysql 5.7</p>
+</blockquote>
+<h3 id="mysql报错如下："><a href="#mysql报错如下：" class="headerlink" title="mysql报错如下："></a>mysql报错如下：</h3><pre class=" language-mysql"><code class="language-mysql">SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
 </code></pre>
-<p>或着也可以在由前端在html页面中添加meta：</p>
-<pre class=" language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">http-equiv</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Content-Security-Policy<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>upgrade-insecure-requests<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
-</code></pre>
-<p>或者在nginx配置中进行header的添加：</p>
-<pre class=" language-nginx"><code class="language-nginx"><span class="token keyword">server</span> <span class="token punctuation">{</span>
-        <span class="token keyword">listen</span>       <span class="token number">443</span><span class="token punctuation">;</span>
-        <span class="token keyword">server_name</span>  www<span class="token punctuation">.</span>example<span class="token punctuation">.</span>com<span class="token punctuation">;</span>
-        <span class="token keyword">error_log</span>  <span class="token operator">/</span>logs<span class="token operator">/</span>nginx<span class="token operator">/</span>error<span class="token punctuation">.</span>log<span class="token punctuation">;</span>
-        <span class="token keyword">root</span> <span class="token operator">/</span>var<span class="token operator">/</span>www<span class="token operator">/</span>www<span class="token punctuation">.</span>example<span class="token punctuation">.</span>com<span class="token punctuation">;</span>
-        <span class="token keyword">index</span>  <span class="token keyword">index</span><span class="token punctuation">.</span>php <span class="token keyword">index</span><span class="token punctuation">.</span>html <span class="token keyword">index</span><span class="token punctuation">.</span>htm<span class="token punctuation">;</span>
-        <span class="token keyword">ssl</span> on<span class="token punctuation">;</span>
-        <span class="token keyword">ssl_certificate</span>   cert<span class="token operator">/</span>test<span class="token operator">/</span>test<span class="token punctuation">.</span>pem<span class="token punctuation">;</span>
-        <span class="token keyword">ssl_certificate_key</span>  cert<span class="token operator">/</span>test<span class="token operator">/</span>test<span class="token punctuation">.</span>key<span class="token punctuation">;</span>
-        <span class="token keyword">ssl_session_timeout</span> 5m<span class="token punctuation">;</span>
-
-         <span class="token comment" spellcheck="true">#添加响应头</span>
-        <span class="token keyword">add_header</span> Content<span class="token operator">-</span>Security<span class="token operator">-</span>Policy <span class="token string">"upgrade-insecure-requests'"</span><span class="token punctuation">;</span>
-
-
-
-        <span class="token keyword">location</span> <span class="token operator">/</span> <span class="token punctuation">{</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token operator">-</span>f <span class="token variable">$request_filename</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-                        <span class="token keyword">rewrite</span> <span class="token operator">^</span><span class="token operator">/</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">)</span>$ <span class="token operator">/</span><span class="token keyword">index</span><span class="token punctuation">.</span>php<span class="token operator">?</span>s<span class="token operator">=</span>$<span class="token number">1</span> last<span class="token punctuation">;</span>
-                        <span class="token keyword">break</span><span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-                <span class="token keyword">limit_except</span> GET POST DELETE PUT <span class="token punctuation">{</span>
-                        <span class="token keyword">deny</span> all<span class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span>
-……
-<span class="token punctuation">}</span>
-</code></pre>
-<p>从而让浏览器对页面中的所有http请求，都升级为https协议发送请求，从而省去了逐一修改url的协议的麻烦。</p>
-<p>以上，希望对大家有帮助。</p>
+<p>是由于mysql默认开启严格模式，当select字段比group by使用到的字段多的时候，会报错。</p>
+<p>可以减少多余的select的字段，或者关闭严格模式（mysql中设置 或 laravel中设置）</p>
+<p>我选择的解决方法是在laravel的 <code>config/database.php</code> 中设置 strict 为false，关闭严格模式。<br>当然关闭严格模式会有一些其他的影响，比如varchar字符长度超过了指定的长度，会截取到指定长度，而不会报错等。</p>
+<p>不过不会有大的影响，可以放心使用。</p>
 
             </div>
             <hr>
@@ -618,7 +577,7 @@ This content should also be served over HTTPS.
                     </span>
                     <a href="http://wyq2214368.github.io" class="b-link-green">WYQ</a>
                     <i class="fa fa-angle-right fa-lg fa-fw text-color"></i>
-                    <a href="/2019/07/05/nginx/rang-ye-mian-zhong-de-http-qing-qiu-zhuan-wei-https-qing-qiu/" class="b-link-green">让页面中的http请求转为https请求</a>
+                    <a href="/2019/07/30/php/laravel-de-groupby-bao-cuo-wen-ti-chu-li/" class="b-link-green">Laravel的groupBy()报错问题处理</a>
                 </p>
             </div>
         </div>
@@ -640,7 +599,7 @@ This content should also be served over HTTPS.
         repo: 'wyq2214368.github.io',
         owner: 'wyq2214368',
         admin: "wyq2214368",
-        id: '2019-07-05T00-00-00',
+        id: '2019-07-30T00-00-00',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -665,20 +624,19 @@ This content should also be served over HTTPS.
             <div class="article-badge left-badge text-color">
                 <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2019/07/30/php/laravel-de-groupby-bao-cuo-wen-ti-chu-li/">
+                <a href="/2019/07/30/php/mysql5.7-he-laravel5.7-de-json-zi-duan-lei-xing-wen-ti/">
                     <div class="card-image">
                         
                         
-                        <img src="https://githubio.pek3b.qingstor.com/medias/featureimages/4.jpg" class="responsive-img" alt="Laravel的groupBy()报错问题处理">
+                        <img src="https://githubio.pek3b.qingstor.com/medias/featureimages/17.jpg" class="responsive-img" alt="Mysql5.7和laravel5.7的Json字段类型问题">
                         
-                        <span class="card-title">Laravel的groupBy()报错问题处理</span>
+                        <span class="card-title">Mysql5.7和laravel5.7的Json字段类型问题</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary block-with-text">
-Laravel 5.7Mysql 5.7
-
-mysql报错如下：SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #1 of SELECT list is</div>
+                    <div class="summary block-with-text">当我使用 laravel的Eloquent模型 查询含有json类型字段的数据时，有报错如下：
+SQLSTATE[HY000]: General error: 2036
+这个是因为json字段需要php的mysqlnd扩展来支持，而不是使用</div>
                     <div class="publish-info">
                         <span class="publish-date">
                             <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-30
@@ -717,31 +675,29 @@ mysql报错如下：SQLSTATE[42000]: Syntax error or access violation: 1055 Expr
                 下一篇&nbsp;<i class="fa fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/06/25/php/laravel-jiang-qing-qiu-fen-pai-dao-ling-yi-ge-lu-you/">
+                <a href="/2019/07/05/nginx/rang-ye-mian-zhong-de-http-qing-qiu-zhuan-wei-https-qing-qiu/">
                     <div class="card-image">
                         
                         
-                        <img src="https://githubio.pek3b.qingstor.com/medias/featureimages/2.jpg" class="responsive-img" alt="laravel将请求分派到另一个路由">
+                        <img src="https://githubio.pek3b.qingstor.com/medias/featureimages/0.jpg" class="responsive-img" alt="让页面中的http请求转为https请求">
                         
-                        <span class="card-title">laravel将请求分派到另一个路由</span>
+                        <span class="card-title">让页面中的http请求转为https请求</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary block-with-text">
-参考laravel手册 https://laravel.com/api/5.7/Illuminate/Routing/Router.html
-
-最近有个业务场景是这样：
-//在管理模块中，要根据模块名动态跳转到该模块的controller</div>
+                    <div class="summary block-with-text">由于项目业务升级，网站升级https协议。
+在 HTTPS 承载的页面上不允许出现 http 请求，一旦出现就是提示或报错：
+Mixed Content: The page at &#39;https://www.example.com&#</div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-06-25
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-05
                             </span>
                         <span class="publish-author">
                             
                             <i class="fa fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/php/" class="post-category" target="_blank">
-                                    php
+                            <a href="/categories/nginx/" class="post-category" target="_blank">
+                                    nginx
                                 </a>
                             
                             
@@ -751,8 +707,20 @@ mysql报错如下：SQLSTATE[42000]: Syntax error or access violation: 1055 Expr
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/laravel/" target="_blank">
-                        <span class="chip bg-color">laravel</span>
+                    <a href="/tags/html/" target="_blank">
+                        <span class="chip bg-color">html</span>
+                    </a>
+                    
+                    <a href="/tags/php/" target="_blank">
+                        <span class="chip bg-color">php</span>
+                    </a>
+                    
+                    <a href="/tags/nginx/" target="_blank">
+                        <span class="chip bg-color">nginx</span>
+                    </a>
+                    
+                    <a href="/tags/http/" target="_blank">
+                        <span class="chip bg-color">http</span>
                     </a>
                     
                 </div>
