@@ -5,9 +5,16 @@
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
     <meta name="keywords" content="Mysql5.7和laravel5.7的Json字段类型问题, wyq博客 小白成神路 php laravel linux mysql python js go">
-    <meta name="description" content="当我使用 laravel的Eloquent模型 查询含有json类型字段的数据时，有报错如下：
+    <meta name="description" content="
+
+laravel 5.7
+mysql 5.7
+php 7.2
+
+
+当我使用 laravel的Eloquent模型 查询含有json类型字段的数据时，有报错如下：
 SQLSTATE[HY000]: General error: 2036
-这个是因为json字段需要php的mysqlnd扩展来支持，而不是使用">
+这">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -420,13 +427,25 @@ SQLSTATE[HY000]: General error: 2036
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>当我使用 laravel的Eloquent模型 查询含有json类型字段的数据时，有报错如下：</p>
+                <blockquote>
+<ul>
+<li>laravel 5.7</li>
+<li>mysql 5.7</li>
+<li>php 7.2</li>
+</ul>
+</blockquote>
+<p>当我使用 laravel的Eloquent模型 查询含有json类型字段的数据时，有报错如下：</p>
 <pre><code>SQLSTATE[HY000]: General error: 2036
 </code></pre><p>这个是因为json字段需要php的<code>mysqlnd</code>扩展来支持，而不是使用默认的<code>mysql</code>扩展</p>
 <p>我按照以下步骤解决了这个问题：</p>
-<pre class=" language-linux"><code class="language-linux">sudo yum remove php70w-mysql
-sudo yum install php70w-mysqlnd
+<pre class=" language-linux"><code class="language-linux">#更换对应php版本的mysql扩展到mysqlnd，此处我的php版本是7.2
+sudo yum remove php72w-mysql
+sudo yum install php72w-mysqlnd
+
+#如果使用apache，重启httpd模块
 sudo service httpd restart
+#如果使用nginx，重启php-fpm
+sudo service php-fpm restart
 </code></pre>
 <p>看起来问题与此错误有关：<a href="https://bugs.php.net/bug.php?id=70384" target="_blank" rel="noopener">https://bugs.php.net/bug.php?id=70384</a><br>有关差异的更多信息，请参见此处：<a href="http://php.net/manual/en/mysqlinfo.library.choosing.php" target="_blank" rel="noopener">http://php.net/manual/en/mysqlinfo.library.choosing.php</a></p>
 <p>希望对大家有帮助～</p>
@@ -635,9 +654,16 @@ sudo service httpd restart
                     </div>
                 </a>
                 <div class="card-content article-content">
-                    <div class="summary block-with-text">当我使用 laravel的Eloquent模型 查询含有json类型字段的数据时，有报错如下：
+                    <div class="summary block-with-text">
+
+laravel 5.7
+mysql 5.7
+php 7.2
+
+
+当我使用 laravel的Eloquent模型 查询含有json类型字段的数据时，有报错如下：
 SQLSTATE[HY000]: General error: 2036
-这个是因为json字段需要php的mysqlnd扩展来支持，而不是使用</div>
+这</div>
                     <div class="publish-info">
                             <span class="publish-date">
                                 <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-30
@@ -688,9 +714,13 @@ SQLSTATE[HY000]: General error: 2036
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
-Laravel 5.7Mysql 5.7
 
-mysql报错如下：SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #1 of SELECT list is</div>
+Laravel 5.7
+Mysql 5.7
+php 7.2
+
+
+mysql报错如下：SQLSTATE[42000]: Syntax error or access violation: 1055 Expression #1 of SEL</div>
                     <div class="publish-info">
                             <span class="publish-date">
                                 <i class="fa fa-clock-o fa-fw icon-date"></i>2019-07-30
